@@ -21,7 +21,8 @@ def get_formats():
         return jsonify({'error': 'رابط الفيديو مفقود'}), 400
 
     try:
-        ydl_opts = {'cookiefile':'/workspace/cookies.txt','ffmpeg_location':'/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg'}
+        ydl_opts = {'cookiefile':'/workspace/cookies.txt',
+                    'ffmpeg_location':'/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=False)
             formats = info_dict.get('formats', [])
