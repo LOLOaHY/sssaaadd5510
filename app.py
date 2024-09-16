@@ -56,40 +56,20 @@ def download_video():
 
     try:
         # إعدادات yt-dlp لتنزيل الفيديو والصوت
-       try:
-        # إعدادات yt-dlp لتحميل الفيديو
-        video_ydl_opts = {
-            'cookiefile': '/workspace/cookies.txt',
-            'ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
+        ydl_opts = {
             'outtmpl': os.path.join(DOWNLOAD_PATH, '%(title)s.%(ext)s'),
-            'format': format_id,
-            'noplaylist': True,
+            'format': f'{format_id}+bestaudio/best',
+            'merge_output_format': 'mp4',
         }
 
-        # تحميل الفيديو
-        with yt_dlp.YoutubeDL(video_ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=True)
             video_file_path = ydl.prepare_filename(info_dict)
-        
-        # إعدادات yt-dlp لتحميل الصوت
-        audio_ydl_opts = {
-            'cookiefile': '/workspace/cookies.txt',
-            'ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
-            'outtmpl': os.path.join(DOWNLOAD_PATH, '%(title)s.%(ext)s'),
-            'format': 'bestaudio/best',  # تحميل أفضل صوت متاح
-            'noplaylist': True,
-        }
+            audio_file_path = video_file_path.rsplit('.', 1)[0] + '.m4a'  # افتراضياً الصوت سيكون بصيغة m4a
 
-        # تحميل الصوت
-        with yt_dlp.YoutubeDL(audio_ydl_opts) as ydl:
-            info_dict = ydl.extract_info(url, download=True)
-            audio_file_path = ydl.prepare_filename(info_dict)
-
-        # التأكد من وجود الملفات النهائية بصيغة mp4 و m4a
+        # التأكد من وجود الملف النهائي بصيغة mp4
         if not video_file_path.endswith('.mp4'):
             video_file_path = video_file_path.rsplit('.', 1)[0] + '.mp4'
-        if not audio_file_path.endswith('.m4a'):
-            audio_file_path = audio_file_path.rsplit('.', 1)[0] + '.m4a'
 
         # دمج الفيديو والصوت إذا كانا منفصلين
         if os.path.isfile(video_file_path) and os.path.isfile(audio_file_path):
@@ -121,4 +101,4 @@ def download_file(filename):
     return send_from_directory(DOWNLOAD_PATH, filename, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",port="3000",debug=True)
+    app.run(debug=True)
