@@ -57,22 +57,38 @@ def download_video():
 
     try:
         # إعدادات yt-dlp لتنزيل الفيديو والصوت
-        ydl_opts = {
-            'cookiefile':'/workspace/cookies.txt',
-            'ffmpeg_location':'/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
+         video_ydl_opts = {
+            'cookiefile': '/workspace/cookies.txt',
+            'ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
             'outtmpl': os.path.join(DOWNLOAD_PATH, '%(title)s.%(ext)s'),
-            'format': f'{format_id}+bestaudio/best',
-            'merge_output_format': 'mp4',
+            'format': format_id,
+            'noplaylist': True,
         }
 
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        # تحميل الفيديو
+        with yt_dlp.YoutubeDL(video_ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=True)
             video_file_path = ydl.prepare_filename(info_dict)
-            audio_file_path = video_file_path.rsplit('.', 1)[0] + '.m4a'  # افتراضياً الصوت سيكون بصيغة m4a
+        
+        # إعدادات yt-dlp لتحميل الصوت
+        audio_ydl_opts = {
+            'cookiefile': '/workspace/cookies.txt',
+            'ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
+            'outtmpl': os.path.join(DOWNLOAD_PATH, '%(title)s.%(ext)s'),
+            'format': 'bestaudio/best',  # تحميل أفضل صوت متاح
+            'noplaylist': True,
+        }
 
-        # التأكد من وجود الملف النهائي بصيغة mp4
+        # تحميل الصوت
+        with yt_dlp.YoutubeDL(audio_ydl_opts) as ydl:
+            info_dict = ydl.extract_info(url, download=True)
+            audio_file_path = ydl.prepare_filename(info_dict)
+
+        # التأكد من وجود الملفات النهائية بصيغة mp4 و m4a
         if not video_file_path.endswith('.mp4'):
             video_file_path = video_file_path.rsplit('.', 1)[0] + '.mp4'
+        if not audio_file_path.endswith('.m4a'):
+            audio_file_path = audio_file_path.rsplit('.', 1)[0] + '.m4a'
 
         # دمج الفيديو والصوت إذا كانا منفصلين
         if os.path.isfile(video_file_path) and os.path.isfile(audio_file_path):
