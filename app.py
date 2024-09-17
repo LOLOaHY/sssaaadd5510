@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory, url_for
 import yt_dlp
 import os
-import ffmpeg
+
 
 
 app = Flask(__name__)
@@ -31,7 +31,7 @@ def get_formats():
         return jsonify({'error': 'رابط الفيديو مفقود'}), 400
 
     try:#,'ffmpeg-locatio':'/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg'
-        ydl_opts = {'cookiefile': '/workspace/cookies.txt',}
+        ydl_opts = {'cookiefile': '/workspace/cookies.txt','ffmpeg_path':'/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=False)
             formats = info_dict.get('formats', [])
@@ -71,7 +71,7 @@ def download_video():
             
             'outtmpl': os.path.join(DOWNLOAD_PATH, '%(title)s.%(ext)s'),
             'cookiefile': '/workspace/cookies.txt',
-            
+            'ffmpeg_path':'/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
             'format': f'{format_id}+bestaudio',
             'merge_output_format': 'mp4',
         }
