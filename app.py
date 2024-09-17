@@ -30,7 +30,7 @@ def get_formats():
         return jsonify({'error': 'رابط الفيديو مفقود'}), 400
 
     try:
-        ydl_opts = {'cookiefile': '/workspace/cookies.txt','ffmpeg-location':'/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',}
+        ydl_opts = {'cookiefile': '/workspace/cookies.txt','ffmpeg-location':'/workspace/ffmpeg-git-20240629-amd64-static',}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=False)
             formats = info_dict.get('formats', [])
@@ -67,7 +67,7 @@ def download_video():
     try:
         # إعدادات yt-dlp لتنزيل الفيديو والصوت
         ydl_opts = {
-            'ffmpeg-location':'/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
+            'ffmpeg-location':'/workspace/ffmpeg-git-20240629-amd64-static',
             'outtmpl': os.path.join(DOWNLOAD_PATH, '%(title)s.%(ext)s'),
             'cookiefile': '/workspace/cookies.txt',
             
