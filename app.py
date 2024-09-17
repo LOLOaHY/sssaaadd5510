@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory, url_for
 import yt_dlp
 import os
-
+import ffmpeg
 
 app = Flask(__name__)
 
@@ -24,12 +24,13 @@ def index():
 
 @app.route('/get_formats')
 def get_formats():
+    
     url = request.args.get('url')
     if not url:
         return jsonify({'error': 'رابط الفيديو مفقود'}), 400
 
     try:
-        ydl_opts = {'cookiefile': '/workspace/cookies.txt','ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',}
+        ydl_opts = {'cookiefile': '/workspace/cookies.txt',}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=False)
             formats = info_dict.get('formats', [])
@@ -58,7 +59,8 @@ def get_formats():
 def download_video():
     data = request.form
     url = data.get('url')
-    format_id = data.get('format_id')
+   # format_id = data.get('format_id')
+    format_id = request.form['format_id']
     video_file_path = None
     audio_file_path = None
 
@@ -66,8 +68,8 @@ def download_video():
         # إعدادات yt-dlp لتنزيل الفيديو والصوت
         ydl_opts = {
             'outtmpl': os.path.join(DOWNLOAD_PATH, '%(title)s.%(ext)s'),
-            'cookiefile': '/workspace/cookies.txt','ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
-            'format': format_id,
+            'cookiefile': '/workspace/cookies.txt',
+            'format': f'{format_id}+bestaudio',
             'merge_output_format': 'mp4',
         }
 
@@ -85,10 +87,14 @@ def download_video():
             merged_file_path = video_file_path.rsplit('.', 1)[0] + '_merged.mp4'
             if not os.path.isfile(merged_file_path):
                 # دمج الصوت والفيديو
-                ffmpeg.input(video_file_path).output(audio_file_path, vcodec='copy', acodec='aac', strict='experimental').run()
-                os.rename(video_file_path, merged_file_path)  # إعادة تسمية الملف النهائي
-                video_file_path = merged_file_path
-
+                ffmpeg.input(video_file_path).input(audio_file_path).output(merged_file_path, vcodec='copy', acodec='aac', strict='experimental').run()
+                os.rename(merged_file_path, video_file_path)  # إعادة تسمية الملف النهائي ليكون باسم الفيديو الأصلي
+                print(f"Merged file created: {video_file_path}")
+            else:
+                print(f"Merged file already exists: {merged_file_path}")
+        else:
+            print("Either the video or audio file is missing.")
+        
         # تحقق من وجود الملف قبل محاولة إرساله
         if not os.path.isfile(video_file_path):
             return jsonify({'error': 'الملف غير موجود'}), 500
