@@ -59,7 +59,7 @@ def download_video():
         ydl_opts = {
             'cookiefile':'/workspace/cookies.txt',
             'outtmpl': os.path.join(DOWNLOAD_PATH, '%(title)s.%(ext)s'),
-            'format': f'{format_id}+bestaudio/best',
+            'format': f'{format_id}+bestaudio',
             'ffmpeg_location':'/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
             'merge_output_format': 'mp4',
         }
