@@ -21,14 +21,15 @@ def get_formats():
         return jsonify({'error': 'رابط الفيديو مفقود'}), 400
 
     try:
-        ydl_opts = {
-            'cookiefile': '/workspace/cookies.txt',
-            'ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg'
-        }
+        ydl_opts = {'cookiefile': '/workspace/cookies.txt','ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=False)
             formats = info_dict.get('formats', [])
 
+        # سجل جميع الصيغ للتأكد من التفاصيل
+        print("Available formats:", formats)
+
+        # قم بإضافة تفاصيل الصيغ لتكون واضحة
         format_list = [
             {
                 "format_id": f.get("format_id", "unknown"),
@@ -54,11 +55,11 @@ def download_video():
     audio_file_path = None
 
     try:
+        # إعدادات yt-dlp لتنزيل الفيديو والصوت
         ydl_opts = {
-            'cookiefile': '/workspace/cookies.txt',
             'outtmpl': os.path.join(DOWNLOAD_PATH, '%(title)s.%(ext)s'),
-            'format': f'{format_id}+bestaudio',
-            'ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
+            'cookiefile': '/workspace/cookies.txt','ffmpeg_location': '/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg',
+            'format': f'{format_id}+bestaudio/best',
             'merge_output_format': 'mp4',
         }
 
@@ -67,19 +68,24 @@ def download_video():
             video_file_path = ydl.prepare_filename(info_dict)
             audio_file_path = video_file_path.rsplit('.', 1)[0] + '.m4a'  # افتراضياً الصوت سيكون بصيغة m4a
 
+        # التأكد من وجود الملف النهائي بصيغة mp4
         if not video_file_path.endswith('.mp4'):
             video_file_path = video_file_path.rsplit('.', 1)[0] + '.mp4'
 
+        # دمج الفيديو والصوت إذا كانا منفصلين
         if os.path.isfile(video_file_path) and os.path.isfile(audio_file_path):
             merged_file_path = video_file_path.rsplit('.', 1)[0] + '_merged.mp4'
             if not os.path.isfile(merged_file_path):
+                # دمج الصوت والفيديو
                 ffmpeg.input(video_file_path).output(audio_file_path, vcodec='copy', acodec='aac', strict='experimental').run()
-                os.rename(video_file_path, merged_file_path)
+                os.rename(video_file_path, merged_file_path)  # إعادة تسمية الملف النهائي
                 video_file_path = merged_file_path
 
+        # تحقق من وجود الملف قبل محاولة إرساله
         if not os.path.isfile(video_file_path):
             return jsonify({'error': 'الملف غير موجود'}), 500
 
+        # إنشاء رابط التحميل
         file_url = url_for('download_file', filename=os.path.basename(video_file_path), _external=True)
         return jsonify({
             'url': file_url,
