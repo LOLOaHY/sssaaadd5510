@@ -1,2 +1,5 @@
-sudo cp ffmpeg-*/ffmpeg /usr/local/bin/
-sudo cp ffmpeg-*/ffprobe /usr/local/bin/
+#!/bin/bash
+
+# تحديث مدير الحزم وتثبيت FFmpeg
+sudo apt-get update
+sudo apt-get install -y ffmpeg
