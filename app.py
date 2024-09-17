@@ -10,6 +10,14 @@ DOWNLOAD_PATH = os.path.join(os.path.dirname(__file__), 'uploads')
 if not os.path.exists(DOWNLOAD_PATH):
     os.makedirs(DOWNLOAD_PATH)
 
+# مسار ملف التخزين النصي
+INFO_FILE_PATH = os.path.join(os.path.dirname(__file__), 'video_info.txt')
+
+def save_video_info(url, format_id):
+    """تخزين معلومات الفيديو في ملف نصي."""
+    with open(INFO_FILE_PATH, 'a') as file:
+        file.write(f"URL: {url}\nFormat ID: {format_id}\n\n")
+
 @app.route('/')
 def index():
     return render_template('index.html')  # صفحة HTML تحتوي على حقل إدخال وزر للتنزيل
@@ -87,6 +95,10 @@ def download_video():
 
         # إنشاء رابط التحميل
         file_url = url_for('download_file', filename=os.path.basename(video_file_path), _external=True)
+
+        # تخزين معلومات الفيديو في ملف نصي
+        save_video_info(url, format_id)
+
         return jsonify({
             'url': file_url,
             'filename': os.path.basename(video_file_path)
