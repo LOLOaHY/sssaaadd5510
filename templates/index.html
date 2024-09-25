@@ -309,7 +309,7 @@
         /* الرسائل */
         .message {
             position: absolute;
-            bottom: 11%;
+            bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
             padding: 10px;
@@ -351,30 +351,32 @@
             background-repeat: no-repeat;
             background-position: center;
         }
-        .instgrem-logo {
-            background-image: url('/static/social.png');
-            bottom: 1%;
-            left: 7%;
-        }
-        .facebook-logo {
-            background-image: url('/static/facebook.png');
-            bottom: 1%;
-            left: 26%;
-        }
         .youtube-logo {
             background-image: url('/static/youtube.png');
             bottom: 1%;
-            left: 47%;
+            left: 7%;
         }
+        
+        .facebook-logo {
+            background-image: url('/static/facebook.png');
+            bottom: 1%;
+            left: 28%;
+        }
+        
         .twitter-logo {
             background-image: url('/static/twitter.png');
             bottom: 1%;
-            right: 26%;
+            left: 48%;
+        }
+        .instgrem-logo {
+            background-image: url('/static/social.png');
+            bottom: 1%;
+            left: 68%;
         }
         .tiktok-logo {
             background-image: url('/static/tiktok.png');
             bottom: 1%;
-            right: 7%;
+            left: 86.7%;
         }
         
         
@@ -502,7 +504,7 @@
             <button onclick="fetchFormats()">عرض الجودة المتاحة</button>
 
             <label  class="qulit_lab" for="quality" >:اختر الجودة</label>
-            <select class="qulit_selc" id="quality" >
+            <select class="qulit_selc" id="qualityh" >
                 <option class="qulit_opth" value="">الجودات المتاحة </option>
             </select>
             <button onclick="submitUrl()" class="butsub">تحميل</button>
@@ -576,14 +578,14 @@
         function fetchFormats() {
             const url = document.getElementById('video-url').value;
             const messageElement = document.getElementById('message');
-            const qualityOptionsElement = document.getElementById('quality');
+            const qualityOptionsElement = document.getElementById('qualityh');
             
             if (!qualityOptionsElement) {
                 console.error('Element with id "quality" not found.');
                 return;
             }
             messageElement.className = 'message pending';
-            messageElement.innerText = 'جاري الحصول علي الجودة...';
+            messageElement.innerText = '...جاري الحصول علي الجودة';
 
             fetch(`/get_formats?url=${encodeURIComponent(url)}`)
             
@@ -594,7 +596,7 @@
                 return response.json();
             })
             .then(data => {
-                const qualitySelect = document.getElementById('quality');
+                const qualitySelect = document.getElementById('qualityh');
                 if (!qualitySelect) {
                     console.error('Element with id "quality" not found.');
                     return;
@@ -608,7 +610,7 @@
                 data.forEach(format => {
                     const option = document.createElement('option');
                     option.value = format.format_id;
-                    option.textContent = `${format.resolution} - ${format.filesize ? (format.filesize / (1024 * 1024)).toFixed(2) + ' MB' : 'غير متاح حجم الملف'}`;
+                    option.textContent = `${format.format_id} -${format.resolution || 'غير متاح الجودة'} - ${format.ext || 'غير متاح الامتداد'} -${format.filesize ? (format.filesize / (1024 * 1024)).toFixed(2) + ' MB' : 'غير متاح حجم الملف'}`;
                     qualitySelect.appendChild(option);
                 });
 
@@ -629,6 +631,7 @@
         function submitUrl() {
             const url = document.getElementById('video-url').value;
             const messageElement = document.getElementById('message');
+            const format_id = document.getElementById('qualityh').value;
 
             if (!messageElement) {
                 console.error('Element with id "message" not found.');
@@ -636,7 +639,7 @@
             }
 
             messageElement.className = 'message pending';
-            messageElement.innerText = 'جاري التحميل...';
+            messageElement.innerText = '....جاري التحميل';
 
             fetch('/download', {
                 method: 'POST',
@@ -644,7 +647,7 @@
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: new URLSearchParams({
-                    'url': url
+                    'url': url,'format_id':format_id
                 })
             })
             .then(response => {
@@ -666,7 +669,7 @@
                 link.click();
 
                 messageElement.className = 'message success';
-                messageElement.innerText = 'تم تنزيل الفيديو!';
+                messageElement.innerText = '!...تم تنزيل الفيديو';
             })
             .catch(error => {
                 console.error('Error:', error);
