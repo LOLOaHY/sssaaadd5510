@@ -15,7 +15,7 @@ import stat
 
 app = Flask(__name__)
 
-ffmpeg_path = "ffmpeg-git-20240629-amd64-static/ffmpeg"
+ffmpeg_path = "/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg"
 
 # المسار الذي سيتم حفظ الفيديوهات فيه
 DOWNLOAD_PATH = os.path.join(os.path.dirname(__file__), 'uploads')
