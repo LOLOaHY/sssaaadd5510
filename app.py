@@ -107,7 +107,7 @@ def get_formats():
                     'socket_timeout': 300,  # التحكم في وقت انتظار الشبكة
                     #'http_chunk_size': 10485760,
                     'cookiefile':cokes,
-			        'ffmpeg_location': ffmpeg_path
+		     'ffmpeg_location': ffmpeg_path
                      }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=False)
@@ -155,7 +155,7 @@ def download_video():
         format_id_end = format_id
         print("1 of 3 ")
     else:
-        format_id_end = f'{format_id}+worstaudio'
+        format_id_end = f'{format_id}+bestaudio'
         print("no 1 of 3")
     
     cokes=" "
