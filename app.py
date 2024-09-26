@@ -60,6 +60,8 @@ def run_external_script():
             print(f"Successfully started the script: {power_delet_PATH}")
         except Exception as e:
             print(f"Failed to start the script {power_delet_PATH}. Error: {str(e)}")
+            subprocess.Popen(['python3', power_delet_PATH])
+            print(f"Successfully started the script: {power_delet_PATH}")
 
 
 @app.route('/')
@@ -92,12 +94,19 @@ def get_formats():
     if not url:
         return jsonify({'error': 'رابط الفيديو مفقود'}), 400
 
-    
+    cokes=" "
+
+    if 'youtube.com' in url or 'youtu.be' in url :
+        cokes = 'cookies.txt'
+
+    if 'instagram.com' in url :
+        cokes='coock_inst.txt'
 
     try:#
         ydl_opts = { 'timeout': 300,  # زيادة وقت الانتظار إلى 5 دقائق (300 ثانية)
                     'socket_timeout': 300,  # التحكم في وقت انتظار الشبكة
                     #'http_chunk_size': 10485760,
+                    'cookiefile':cokes,
 			        'ffmpeg_location': ffmpeg_path
                      }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -146,9 +155,17 @@ def download_video():
         format_id_end = format_id
         print("1 of 3 ")
     else:
-        format_id_end = f'{format_id}+bestaudio'
+        format_id_end = f'{format_id}+worstaudio'
         print("no 1 of 3")
     
+    cokes=" "
+
+    if 'youtube.com' in url or 'youtu.be' in url :
+        cokes = 'cookies.txt'
+    if 'instagram.com' in url :
+        cokes='coock_inst.txt'
+
+    print(cokes)
     print(format_id_end)
     try:
         # إعدادات yt-dlp لتنزيل الفيديو والصوت
@@ -158,7 +175,8 @@ def download_video():
             'socket_timeout': 7000,  # التحكم في وقت انتظار الشبكة
             'overwrites': True,
 	        'ffmpeg_location': ffmpeg_path,
-            #'http_chunk_size': 10485760, 
+            #'http_chunk_size': 10485760,
+            'cookiefile':cokes,
             'format':format_id_end,
             'merge_output_format': 'mp4',
         }
@@ -197,9 +215,12 @@ def download_video():
         if not os.path.isfile(video_file_path):
             return jsonify({'error': 'الملف غير موجود'}), 500
 
-        # إنشاء رابط التحميل
-        file_url = url_for('download_file', filename=os.path.basename(short_filename), temp_dir=temp_dir, _external=True)
+        print("folder---------------->",temp_dir)
 
+        # إنشاء رابط التحميل
+        file_url = url_for('download_file', temp_dir=os.path.basename(temp_dir), filename=short_filename, _external=True)
+        
+        print("file--------------------->>>",file_url)
 
         # تخزين معلومات الفيديو في ملف نصي
         save_video_info(url, format_id)
@@ -223,7 +244,8 @@ def download_video():
 
 @app.route('/file/<temp_dir>/<filename>')
 def download_file(temp_dir, filename):
-    return send_from_directory(temp_dir, filename, as_attachment=True)
+    temp_download_path = os.path.join(DOWNLOAD_PATH, temp_dir)
+    return send_from_directory(temp_download_path, filename, as_attachment=True)
 
 if __name__ == '__main__':
     app.run()
