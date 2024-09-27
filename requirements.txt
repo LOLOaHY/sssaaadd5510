@@ -1,7 +1,7 @@
-Flask==3.0.3
-gunicorn==20.0.4
+Flask
+gunicorn
 yt-dlp
-ffmpeg-python==0.2.0
+ffmpeg-python
 ffpyplayer
 psutil
 gevent
