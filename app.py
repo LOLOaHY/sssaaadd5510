@@ -15,7 +15,7 @@ import stat
 
 app = Flask(__name__)
 
-ffmpeg_path = "/workspace/ffmpeg-git-20240629-amd64-static/ffmpeg"
+ffmpeg_path = "ffmpeg-git-20240629-amd64-static/ffmpeg"
 
 # المسار الذي سيتم حفظ الفيديوهات فيه
 DOWNLOAD_PATH = os.path.join(os.path.dirname(__file__), 'uploads')
@@ -155,7 +155,7 @@ def download_video():
         format_id_end = format_id
         print("1 of 3 ")
     else:
-        format_id_end = format_id
+        format_id_end = f'{format_id}+bestaudio'
         print("no 1 of 3")
     
     cokes=" "
