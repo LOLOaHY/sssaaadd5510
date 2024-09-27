@@ -155,9 +155,9 @@ def download_video():
         format_id_end = format_id
         print("1 of 3 ")
     else:
-        format_id_end = f'{format_id}+bestaudio'
+        format_id_end = format_id
         print("no 1 of 3")
-    
+    	#bestaudio'
     cokes=" "
 
     if 'youtube.com' in url or 'youtu.be' in url :
