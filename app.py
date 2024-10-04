@@ -16,7 +16,7 @@ import stat
 app = Flask(__name__)
 
 ffmpeg_path = "ffmpeg-git-20240629-amd64-static/ffmpeg"
-ffprobe_path = "ffmpeg-git-20240629-amd64-static/ffprobe"
+#ffprobe_path = "ffmpeg-git-20240629-amd64-static/ffprobe"
 
 # المسار الذي سيتم حفظ الفيديوهات فيه
 DOWNLOAD_PATH = os.path.join(os.path.dirname(__file__), 'uploads')
@@ -108,7 +108,7 @@ def get_formats():
                     'socket_timeout': 300,  # التحكم في وقت انتظار الشبكة
                     #'http_chunk_size': 10485760,
                     'cookiefile':cokes,
-		    'ffprobe_location': ffprobe_path,
+		    #'ffprobe_location': ffprobe_path,
 		     'ffmpeg_location': ffmpeg_path
                      }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -176,7 +176,7 @@ def download_video():
             'timeout': 7000,  # زيادة وقت الانتظار إلى 5 دقائق (7000 ثانية)
             'socket_timeout': 7000,  # التحكم في وقت انتظار الشبكة
             'overwrites': True,
-		'ffprobe_location': ffprobe_path,
+		#'ffprobe_location': ffprobe_path,
 	        'ffmpeg_location': ffmpeg_path,
             #'http_chunk_size': 10485760,
             'cookiefile':cokes,
