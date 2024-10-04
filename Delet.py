@@ -45,7 +45,7 @@ def check_and_cleanup_folders(base_path):
             folder_creation_time = folder.stat().st_ctime
 
             # تحقق إذا كان المجلد قد تم إنشاؤه منذ أكثر من 10 دقائق
-            if current_time - folder_creation_time > 600:  # 10 دقائق = 600 ثانية
+            if current_time - folder_creation_time > 300:  # 5 دقائق = 300 ثانية
                 thread = threading.Thread(target=check_folder_for_files, args=(folder, folders_to_delete, lock))
                 threads.append(thread)
                 thread.start()
