@@ -248,4 +248,4 @@ def download_file(temp_dir, filename):
     return send_from_directory(temp_download_path, filename, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(ssl_context=('cert.pem', 'key.pem'))
+    app.run()
