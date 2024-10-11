@@ -84,7 +84,12 @@ def index():
         print(f"file not found {file_path}")
 
     run_external_script()
-    return render_template('index.html')  # صفحة HTML تحتوي على حقل إدخال وزر للتنزيل
+    user_agent = request.headers.get('User-Agent', '')
+    # تحقق من الـ User-Agent
+    if 'wv' in user_agent:
+        return render_template('index.html')  # صفحة HTML تحتوي على حقل إدخال وزر للتنزيل
+    else:
+        return render_template('index_block.html'), 403
 
 @app.route('/get_formats')
 def get_formats():
