@@ -605,6 +605,9 @@
             fetch(`/get_formats?url=${encodeURIComponent(url)}`)
             
             .then(response => {
+                if (response.status === 313) {
+                    throw new Error('ممنوع التحميل من المواقع الاباحية.');
+                }
                 if (!response.ok) {
                     throw new Error('Network response was not ok.');
                 }
