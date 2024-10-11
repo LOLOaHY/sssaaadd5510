@@ -189,7 +189,8 @@ def get_formats():
                     }
                     for f in formats
                         if ('facebook.com' in url and f.get("vcodec", "none") == "none") or 
-                        ('facebook.com' not in url and f.get("vcodec", "none") != "none")
+                        ('facebook.com' not in url and f.get("vcodec", "none") != "none")and
+                        (('tiktok.com' not in url) or ('tiktok.com' in url and f.get("format_id", "").endswith("0")))
                                             
                 ]
 
