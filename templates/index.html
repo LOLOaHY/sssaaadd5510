@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحميل فديوهات(loai mohamed)</title>
-    <link rel="icon" href="/static/video.png"/>
     
+    <link rel="icon" href="/static/video.png"/>
+
     <style>
         /* إعداد الصفحة */
         body, html {
@@ -15,10 +16,11 @@
             height: 100%;
             background-color: #ffffff; /* خلفية بيضاء */
             overflow: hidden;
+            margin: 0; /* إزالة الهامش الافتراضي */
             font-family: Arial, sans-serif;
         }
 
-        .container {
+        /* .container {
             position: relative;
             width: 100%;
             height: 100%;
@@ -26,21 +28,29 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            overflow-block: hidden;
+        } */
+
+              
+
+        .container {
+            position: relative; /* تأكد من أن الأشكال داخل حاوية محددة */
+            width: 100vw; /* عرض الحاوية ليكون بنفس عرض الشاشة */
+            height: 100vh; /* ارتفاع الحاوية ليكون بنفس ارتفاع الشاشة */
         }
 
-        /* الأشكال */
+        /* إعدادات الأشكال */
         .shape {
-            position: absolute;
-            width: 100px;
-            height: 100px;
+            position: absolute; /* تجعل الأشكال غير مرتبطة بتخطيط الصفحة */
+            width: 100px; /* عرض ثابت */
+            height: 100px; /* ارتفاع ثابت */
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* الأشكال الجديدة بألوان شعار جوجل */
-         /* الأشكال الجديدة بألوان شعار جوجل */
-         .shape.red {
+        /* الأشكال بألوان شعار جوجل */
+        .shape.red {
             background-color: #ce0e0e; /* أحمر جوجل */
         }
         .shape.blue {
@@ -135,84 +145,85 @@
 
         /* حركة الأشكال */
         @keyframes moveCircle {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(200px, -50px); }
-            50% { transform: translate(400px, 0); }
-            75% { transform: translate(200px, 50px); }
-            100% { transform: translate(0, 0); }
+            0% { transform: translate(200%, 3%); }
+            25% { transform: translate(-70%, 50%); }
+            50% { transform: translate(70%, 50%); }
+            75% { transform: translate(100%, 30%); }
+            100% { transform: translate(200%, 3%); }
         }
 
         @keyframes moveSquare {
             0% { transform: translate(0, 0); }
-            25% { transform: translate(-200px, 100px); }
-            50% { transform: translate(-400px, 0); }
-            75% { transform: translate(-200px, -100px); }
+            25% { transform: translate(50px, 0); }
+            50% { transform: translate(-50px, 0); }
+            75% { transform: translate(50px, 0); }
             100% { transform: translate(0, 0); }
         }
 
         @keyframes moveRectangle {
             0% { transform: translate(0, 0); }
-            25% { transform: translate(150px, 200px); }
-            50% { transform: translate(300px, 100px); }
-            75% { transform: translate(150px, 300px); }
+            25% { transform: translate(75px, 50px); }
+            50% { transform: translate(-75px, 50px); }
+            75% { transform: translate(75px, 50px); }
             100% { transform: translate(0, 0); }
         }
 
         @keyframes moveParallelogram {
             0% { transform: translate(0, 0); }
-            25% { transform: translate(-150px, -100px); }
-            50% { transform: translate(-300px, -200px); }
-            75% { transform: translate(-150px, 50px); }
+            25% { transform: translate(-50px, -25px); }
+            50% { transform: translate(50px, -25px); }
+            75% { transform: translate(-50px, -25px); }
             100% { transform: translate(0, 0); }
         }
 
         @keyframes moveCylinder {
             0% { transform: translate(0, 0); }
-            25% { transform: translate(200px, -150px); }
-            50% { transform: translate(400px, -300px); }
-            75% { transform: translate(200px, 150px); }
+            25% { transform: translate(75px, -50px); }
+            50% { transform: translate(-75px, -50px); }
+            75% { transform: translate(75px, -50px); }
             100% { transform: translate(0, 0); }
         }
 
         @keyframes moveGoldCylinder {
             0% { transform: translate(0, 0); }
-            25% { transform: translate(-200px, -150px); }
-            50% { transform: translate(-400px, -300px); }
-            75% { transform: translate(-200px, 150px); }
+            25% { transform: translate(-75px, -50px); }
+            50% { transform: translate(75px, -50px); }
+            75% { transform: translate(-75px, -50px); }
             100% { transform: translate(0, 0); }
         }
 
         /* إعدادات التحريك لكل شكل */
         .shape.circle {
-            animation: moveCircle 10s infinite ease-in-out;
+            animation: moveCircle 6s infinite ease-in-out;
             top: 10%;
-            left: 10%;
+            right: 50%;
         }
         .shape.square {
-            animation: moveSquare 12s infinite ease-in-out;
+            animation: moveSquare 6s infinite ease-in-out;
             top: 30%;
             left: 50%;
         }
         .shape.rectangle {
-            animation: moveRectangle 14s infinite ease-in-out;
+            animation: moveRectangle 8s infinite ease-in-out;
             top: 50%;
             left: 20%;
         }
         .shape.parallelogram {
-            animation: moveParallelogram 16s infinite ease-in-out;
+            animation: moveParallelogram 8s infinite ease-in-out;
             top: 70%;
             left: 60%;
         }
         .shape.cylinder {
-            animation: moveCylinder 18s infinite ease-in-out;
+            animation: moveCylinder 10s infinite ease-in-out;
             top: 40%;
             left: 70%;
         }
         .shape.gold-cylinder {
-            animation: moveGoldCylinder 20s infinite ease-in-out;
+            animation: moveGoldCylinder 12s infinite ease-in-out;
             top: 60%;
             left: 50%;
         }
+
 
         /* تمركز حقل الإدخال والزر */
         .input-container {
@@ -585,8 +596,8 @@
         <div class="logo youtube-logo"></div>
         <div class="logo twitter-logo"></div>
         <div class="logo instgrem-logo"></div>
-        <div class="logol viedo-logo"></div>
         
+        <div class="logol viedo-logo"></div>
     </div>
     
     <script>
