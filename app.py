@@ -208,7 +208,7 @@ def get_formats():
 	    else :
 	        return jsonify({'error': f"ممنوع التحميل من المواقع الاباحية...!"}), 313
 	else :
-	        return jsonify({'error': f"غير متاح بعد التحميل من هذهي المنصة الرجاء ارسال هذهي المنصة للمطور ...!"}), 314
+	    return jsonify({'error': f"غير متاح بعد التحميل من هذهي المنصة الرجاء ارسال هذهي المنصة للمطور ...!"}), 314
 
 
 @app.route('/download', methods=['POST'])
