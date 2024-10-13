@@ -89,7 +89,7 @@ def index():
     if 'wv' in user_agent:
         return render_template('index.html')  # صفحة HTML تحتوي على حقل إدخال وزر للتنزيل
     else:
-        return render_template('index.html'), 403
+        return render_template('index_block.html'), 403
 
 @app.route('/get_formats')
 def get_formats():
