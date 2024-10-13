@@ -89,7 +89,7 @@ def index():
     if 'wv' in user_agent:
         return render_template('index.html')  # صفحة HTML تحتوي على حقل إدخال وزر للتنزيل
     else:
-        return render_template('index_block.html'), 403
+        return render_template('index.html'), 403
 
 @app.route('/get_formats')
 def get_formats():
@@ -107,108 +107,131 @@ def get_formats():
 
     if 'instagram.com' in url :
         cokes='coock_inst.txt'
-    if 'youtube.com' in url or 'youtu.be' in url or 'www.kwai.com' in url or 'tiktok.com' in url or 'instagram.com' in url or 'facebook.com' in url or 'x.com' in url:
-	    if ('xnxx.com' not in url and 
-	    'pornhub.com' not in url and 
-	    'ixxx.com' not in url and 
-	    'xvideos.com' not in url and 
-	    'xxx.com' not in url and 
-	    'sex-arebi.com' not in url and 
-	    'xxxz.tv' not in url and 
-	    'xvideosxnxx.org' not in url and 
-	    'arabic.alibaba.com' not in url and 
-	    'xhamster.com' not in url and
-	    'rule34.xxx' not in url and 
-	    'ok.xxx' not in url and 
-	    'rottentomatoes.com' not in url and 
-	    'sexallarab.com' not in url and 
-	    'xxxbule.com' not in url and 
-	    'filmeporno.vip' not in url and 
-	    'sexvid.xxx' not in url and 
-	    'sex4arab.xxx' not in url and 
-	    'xxxbp.tv' not in url and 
-	    'filmexxx.live' not in url and 
-	    'rexporn.sex' not in url and 
-	    'freepornvideo.sex' not in url and 
-	    'fpo.xxx' not in url and 
-	    'xxx18hot.com' not in url and 
-	    'rusoska.com' not in url and 
-	    'youx.xxx' not in url and 
-	    'youporn.com' not in url and 
-	    'xxx.org' not in url and 
-	    'xxxsexpic.me' not in url and 
-	    'xcafe.com' not in url and 
-	    'filmexxx18.com' not in url and 
-	    'conxxx.pro' not in url and 
-	    'tabootube.xxx' not in url and 
-	    'xlx.xxx' not in url and 
-	    'xxxvideos247.com' not in url and 
-	    'zbporn.com' not in url and 
-	    'pornid.xxx' not in url and 
-	    'xxxz.tv' not in url and 
-	    'sa.made-in-china.com' not in url and 
-	    'xxxvideos.name' not in url and 
-	    'redtube.com' not in url and 
-	    'csakporno.hu' not in url and 
-	    'xxxpornhd.pro' not in url and 
-	    'xxxvideo.link' not in url and 
-	    'theporndude.com' not in url and 
-	    'ijavhd.com' not in url and 
-	    'latestly.com' not in url and 
-	    'www.redtube.com' not in url and 
-	    'pornogratisdiario.com' not in url and 
-	    'www.maturepornvideos.xxx' not in url and 
-	    'pussyboy.net' not in url and 
-	    'xvideosporno.blog.br' not in url and 
-	    'pornobrasil.com' not in url and 
-	    'xzx.mobi' not in url and 
-	    'greencrops.com.ar' not in url and 
-	    'xxxfollow.com' not in url and 
-	    'jennymovies.com' not in url and 
-	    'enhdsex.com' not in url and 
-	    'x-x-x.tube' not in url and 
-	    'trendyxxx.com' not in url):
-	    # قم بتنفيذ الكود هنا
-	
-	        try:#
-	                ydl_opts = { 'timeout': 300,  # زيادة وقت الانتظار إلى 5 دقائق (300 ثانية)
-	                            'socket_timeout': 300,  # التحكم في وقت انتظار الشبكة
-	                            #'http_chunk_size': 10485760,
-	                            'cookiefile':cokes,
-	                            'ffmpeg_location': ffmpeg_path
-	                            }
-	                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-	                    info_dict = ydl.extract_info(url, download=False)
-	                    formats = info_dict.get('formats', [])
-	
-	
-	                # قم بإضافة تفاصيل الصيغ لتكون واضحة
-	                format_list = [
-	                    {
-	                        "format_id": f.get("format_id", "unknown"),
-	                        "resolution": f.get("resolution", "unknown"),
-	                        "ext" : f.get("ext", "unknown"),  # الامتداد
-	                        #"fps" = f.get("fps", "N/A")  # سرعة الإطارات (FPS)
-	                        "filesize": f.get("filesize", 0),
-	                        "format_note": f.get("format_note", "No additional notes"),
-	                    }
-	                    for f in formats
-	                        if ('facebook.com' in url and f.get("vcodec", "none") == "none") or 
-	                        ('facebook.com' not in url and f.get("vcodec", "none") != "none")and
-	                        (('tiktok.com' not in url) or ('tiktok.com' in url and f.get("format_id", "").endswith("0")))
-	                                            
-	                ]
-	
-	                return jsonify(format_list)
-	        
-	
-	        except Exception as e:
-	            return jsonify({'error': f"حدث خطأ أثناء جلب الجوداة: {str(e)}"}), 500
-	
-	    else :
-	        return jsonify({'error': f"ممنوع التحميل من المواقع الاباحية...!"}), 313
-	else :
-	    return jsonify({'error': f"غير متاح بعد التحميل من هذهي المنصة الرجاء ارسال هذهي المنصة للمطور ...!"}), 314
+
+    
+    power = 0
+
+    if ('xnxx.com' not in url and 
+    'pornhub.com' not in url and 
+    'ixxx.com' not in url and 
+    'xvideos.com' not in url and 
+    'xxx.com' not in url and 
+    'sex-arebi.com' not in url and 
+    'xxxz.tv' not in url and 
+    'xvideosxnxx.org' not in url and 
+    'arabic.alibaba.com' not in url and 
+    'xhamster.com' not in url and
+    'rule34.xxx' not in url and 
+    'ok.xxx' not in url and 
+    'rottentomatoes.com' not in url and 
+    'sexallarab.com' not in url and 
+    'xxxbule.com' not in url and 
+    'filmeporno.vip' not in url and 
+    'sexvid.xxx' not in url and 
+    'sex4arab.xxx' not in url and 
+    'xxxbp.tv' not in url and 
+    'filmexxx.live' not in url and 
+    'rexporn.sex' not in url and 
+    'freepornvideo.sex' not in url and 
+    'fpo.xxx' not in url and 
+    'xxx18hot.com' not in url and 
+    'rusoska.com' not in url and 
+    'youx.xxx' not in url and 
+    'youporn.com' not in url and 
+    'xxx.org' not in url and 
+    'xxxsexpic.me' not in url and 
+    'xcafe.com' not in url and 
+    'filmexxx18.com' not in url and 
+    'conxxx.pro' not in url and 
+    'tabootube.xxx' not in url and 
+    'xlx.xxx' not in url and 
+    'xxxvideos247.com' not in url and 
+    'zbporn.com' not in url and 
+    'pornid.xxx' not in url and 
+    'xxxz.tv' not in url and 
+    'sa.made-in-china.com' not in url and 
+    'xxxvideos.name' not in url and 
+    'redtube.com' not in url and 
+    'csakporno.hu' not in url and 
+    'xxxpornhd.pro' not in url and 
+    'xxxvideo.link' not in url and 
+    'theporndude.com' not in url and 
+    'ijavhd.com' not in url and 
+    'latestly.com' not in url and 
+    'www.redtube.com' not in url and 
+    'pornogratisdiario.com' not in url and 
+    'www.maturepornvideos.xxx' not in url and 
+    'pussyboy.net' not in url and 
+    'xvideosporno.blog.br' not in url and 
+    'pornobrasil.com' not in url and 
+    'xzx.mobi' not in url and 
+    'greencrops.com.ar' not in url and 
+    'xxxfollow.com' not in url and 
+    'jennymovies.com' not in url and 
+    'enhdsex.com' not in url and 
+    'x-x-x.tube' not in url and 
+    'trendyxxx.com' not in url):
+        power = 0
+    else :
+        power = 1
+
+    powerurl = 0
+
+        # التحقق من المواقع المدعومة
+    supported_sites = ['youtube.com', 'youtu.be', 'www.kwai.com', 'tiktok.com', 'instagram.com', 'facebook.com', 'x.com']
+
+    if any(site in url for site in supported_sites):
+        powerurl = 0
+        print("yes")
+    else:
+        powerurl = 1
+        return jsonify(f"غير متاح بعد التحميل من المنصة {url}، لإضافتها قم بإرسال هذه المنصة للمطور."),314
+
+    # إذا تحقق أن الموقع مدعوم
+    if power == 0 and powerurl == 0:
+        try:
+            ydl_opts = { 
+                'timeout': 300,  # زيادة وقت الانتظار إلى 5 دقائق (300 ثانية)
+                'socket_timeout': 300,  # التحكم في وقت انتظار الشبكة
+                #'http_chunk_size': 10485760,
+                'cookiefile': cokes,
+                'ffmpeg_location': ffmpeg_path
+            }
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info_dict = ydl.extract_info(url, download=False)
+                formats = info_dict.get('formats', [])
+
+            # قم بإضافة تفاصيل الصيغ لتكون واضحة
+            format_list = [
+                {
+                    "format_id": f.get("format_id", "unknown"),
+                    "resolution": f.get("resolution", "unknown"),
+                    "ext": f.get("ext", "unknown"),  # الامتداد
+                    #"fps": f.get("fps", "N/A")  # سرعة الإطارات (FPS)
+                    "filesize": f.get("filesize", 0),
+                    "format_note": f.get("format_note", "No additional notes"),
+                }
+                for f in formats
+                if ('facebook.com' in url and f.get("vcodec", "none") == "none") or 
+                ('facebook.com' not in url and f.get("vcodec", "none") != "none") and
+                (('tiktok.com' not in url) or ('tiktok.com' in url and f.get("format_id", "").endswith("0")))
+            ]
+
+            return jsonify(format_list)
+
+        except Exception as e:
+            
+            return jsonify({'error': f"حدث خطأ أثناء جلب الجوداة: رقم الخطاء 147"}), 500
+
+    elif power == 1:
+        return jsonify({'error': f"ممنوع التحميل من المواقع الإباحية...!"}), 313
+
+    elif powerurl == 1:
+        return jsonify({'error1': f"غير متاح بعد التحميل من هذه المنصة، لإضافتها قم بإرسالها للمطور ...!"}), 314
+
+
+    
+
 
 
 @app.route('/download', methods=['POST'])
@@ -311,11 +334,11 @@ def download_video():
     except yt_dlp.DownloadError as e:
         # مسح المجلد في حالة حدوث خطأ
         shutil.rmtree(temp_dir)
-        return jsonify({'error': f"حدث خطأ أثناء التحميل باستخدام yt-dlp: {str(e)}"}), 500
+        return jsonify({'error': f"حدث خطأ أثناء التحميل : رقم الخطاء 465"}), 500
     except Exception as e:
         # مسح المجلد في حالة حدوث أي خطأ آخر
         shutil.rmtree(temp_dir)
-        return jsonify({'error': f"حدث خطأ أثناء التحميل: {str(e)}"}), 500
+        return jsonify({'error': f"حدث خطأ أثناء التحميل : رقم الخطاء 350"}), 500
 
 
 @app.route('/file/<temp_dir>/<filename>')
