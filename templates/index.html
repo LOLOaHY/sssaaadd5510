@@ -228,48 +228,54 @@
         input[type="text"] {
             padding: 15px;
             font-size: 18px;
-            border-radius: 5px;
-            border: 2px solid #4285F4;
+            border-radius: 10px;
+            
             width: 300px;
             text-align: center; 
             box-sizing: border-box;
+            border: 3px solid #085bd8;
+            box-shadow: 0px 0px 10px #ddb335;
         }
         button {
-            background-color: #f3ab26;
+            background-color: #085bd8;
             color: white;
             border: none;
             padding: 10px 20px;
             font-size: 18px;
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
             position: absolute;
+            
+            box-shadow: 0px 0px 10px #ddb335;
             top: 110%;   /* تعديل هذه القيم لتحديد المكان المناسب */
             left: center; 
         }
         button:hover {
-            background-color: #0F9D58;
+            background-color: #ddb335;
             transform: scale(1.05);
         }
 
         .butsub {
             background-color: #085bd8;
-            
-            color: white;
             border: none;
-            padding: 10px 20px;
+            color: white;
+            padding: 3% 12%;
+            
             font-size: 18px;
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
+            
+            box-shadow: 0px 0px 10px #ddb335;
             position: absolute;
-            top: 250%;   /* تعديل هذه القيم لتحديد المكان المناسب */
+            top: 255%;   /* تعديل هذه القيم لتحديد المكان المناسب */
             left: center;
         }
         .butsub:hover {
-            background-color: #0F9D58;
+            background-color: #ddb335;
             transform: scale(1.05);
         }
 
@@ -293,11 +299,13 @@
         .qulit_selc{
             padding: 15px;
             font-size: 18px;
-            
+            font-size: 19px;
+            font-weight: bold;
             background-color:white;
             text-align-last: center;
-            border-radius: 5px;
-            border: 2px solid #4285F4;
+            border-radius: 10px;
+            border: 3px solid #085bd8;
+            box-shadow: 0px 0px 10px #ddb335;
             width: 220px;
             box-sizing: border-box;
             position: absolute;
@@ -307,21 +315,24 @@
 
         /* الرسائل */
         .message {
-            position: absolute;
-            bottom: 10%;
-            
-            
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #f4f4f4;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             font-size: 18px;
-            color: #333;
-            text-align: center;
+            font-weight: bold;
+            width: 75%;
+            height: auto;
+            padding: 10px;
+            background-color: #ffffff;
+            border: 3px solid #085bd8;
+            color: #030202;
             
-            width: 100%;
-            z-index: 15;
+            box-shadow: 0px 0px 10px #ddb335;
+            text-align: center;
+            display: none; /* البداية مخفية */
+            position: fixed;
+            transform: translateX(-50%);
+            bottom: 10%;
+            left: 50%;
+            border-radius: 10px; /* جعل الحواف مستديرة */
+            z-index:100;
         }
 
         .message.success {
@@ -529,7 +540,7 @@
         </div>
         
         <!-- الرسائل -->
-        <div class="message" id="message">حالة التحميل</div>
+        <div class="message" id="message" style="display: block;">حالة التحميل</div>
 
         <!-- فيديو -->
         <div class="video-container video1">
